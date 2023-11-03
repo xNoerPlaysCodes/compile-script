@@ -1,0 +1,59 @@
+#!/bin/bash
+# Py, JS, C/C++ Compiler
+
+is_python="false"
+is_js="false"
+
+# Check for --supported-langs option
+if [ "$1" == "--supported-langs" ]; then
+    echo "Supported languages:"
+    echo "C++"
+    echo "C"
+    echo "Python"
+    echo "JavaScript"
+    exit 0
+fi
+
+# Check the number of arguments
+if [ "$#" -lt 3 ]; then
+    if [ "$1" == "python" ] || [ "$1" == "py" ]; then
+        is_python="true"
+    elif [ "$1" == "js" ] || [ "$1" == "javascript" ]; then
+        is_js="true"
+    else
+        echo "Usage: compile <language> <source_file> <output_file>"
+        exit 1
+    fi
+fi
+
+# Continue with the rest of the script
+if [ "$1" == "cpp" ] || [ "$1" == "c++" ]; then
+    echo "Compiling using g++ with source file '$2' and output file '$3'"
+    # Compile Command
+    g++ -o "$3" "$2" "${@:4}"
+    echo "Compilation complete"
+elif [ "$1" == "c" ]; then
+    echo "Compiling using gcc with source file '$2' and output file '$3'"
+    # Compile Command
+    gcc -o "$3" "$2" "${@:4}"
+    echo "Compilation complete"
+elif [ "$1" == "python" ] || [ "$1" == "py" ]; then
+    $is_python = "true"
+elif [ "$1" == "js" ] || [ "$1" == "javascript" ]; then
+    $is_js = "true"
+else
+    echo "Unsupported language: $1"
+    exit 1
+fi
+
+if [ "$is_python" == "true" ]; then
+    echo "Interpreter: /usr/bin/python3"
+    echo -e ""
+    /usr/bin/python3 "$2"
+fi
+
+if [ "$is_js" == "true" ]; then
+    echo "Interpreter: /usr/bin/node"
+    echo -e ""
+    /usr/bin/node "$2"
+fi
